@@ -37,17 +37,14 @@ public class UserDAOImpl implements UserDao {
     }
 
     @Override
-    public void update(int id, User userUpdated) {
-        User user = (User) entityManager.find(User.class, id); //необходимо сократить
-        user.setName(userUpdated.getName());
-        user.setSurname(userUpdated.getSurname());
+    public void update(User userUpdated) {
+        entityManager.merge(userUpdated);
     }
 
     @Override
     public void deleteUser(int id) {
-        Query query = entityManager.createQuery(
-                "DELETE FROM User u WHERE u.id = :id");     //необходимо сократить
-        query.setParameter("id", id).executeUpdate();
+        User user = entityManager.find(User.class, id);
+        entityManager.remove(user);
     }
 
 }
